@@ -14,6 +14,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   List<String> lista = ["prueba 1", "prueba 2", "prueba 3", "prueba 6"];
   TextEditingController controllerTask = TextEditingController();
+  TextEditingController editingcontrollerTask = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -51,6 +52,39 @@ class _MyAppState extends State<MyApp> {
                           });
                         },
                         icon: Icon(Icons.delete),
+                      ),
+                      leading: IconButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                child: Column(
+                                  children: <Widget>[
+                                    TextField(
+                                      controller: editingcontrollerTask,
+                                      decoration: InputDecoration(
+                                        labelText: "Nuevo valor",
+                                      ),
+                                    ),
+                                    TextButton(
+                                      child: Text("Hecho"),
+                                      onPressed: () {
+                                        var newtaskvalue =
+                                            editingcontrollerTask.text;
+                                        setState(() {
+                                          lista[index] = newtaskvalue;
+                                        });
+                                        editingcontrollerTask.clear();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        icon: Icon(Icons.edit),
                       ),
                     ),
               ),
