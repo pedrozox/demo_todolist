@@ -2,12 +2,12 @@ class TaskEntity {
   final String id;
   final String title;
   final String description;
-  final bool isDone;
+  bool isDone;
 
   TaskEntity({
     required this.id,
     required this.title,
     required this.description,
-    required this.isDone,
+    this.isDone = false,
   });
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todolist/core/injection/injection.dart';
 import 'package:todolist/domain/entities/task_entity.dart';
 import 'package:todolist/presentation/cubit/task_cubit.dart';
 
@@ -21,21 +22,20 @@ class HomePage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              context.read<TaskCubit>().addTask(
+              sl<TaskCubit>().addTask(
                 TaskEntity(
                   id: DateTime.now().toString(),
                   title: controllerTask.text,
                   description: "Descripcion ${controllerTask.text}",
-                  isDone: true,
                 ),
               );
-
               controllerTask.clear();
             },
             child: Text("Agregar"),
           ),
           Expanded(
             child: BlocBuilder<TaskCubit, List<TaskEntity>>(
+              bloc: sl<TaskCubit>()..getTasks(),
               builder:
                   (context, state) => ListView.builder(
                     itemCount: state.length,
