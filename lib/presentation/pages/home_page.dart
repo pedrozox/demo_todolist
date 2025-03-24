@@ -12,32 +12,50 @@ class HomePage extends StatelessWidget {
     var controllerTask = TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Todo List", style: TextStyle(color: Colors.red)),
+        leading: Icon(Icons.menu),
+        title: Text("Todo List", style: TextStyle(fontWeight: FontWeight.bold)),
+        actions: [IconButton(icon: Icon(Icons.refresh), onPressed: () {})],
       ),
-      body: Column(
-        children: [
-          TextField(
-            controller: controllerTask,
-            decoration: InputDecoration(labelText: "Agregar nueva tarea"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              sl<TaskCubit>().addTask(
-                TaskEntity(
-                  id: DateTime.now().toString(),
-                  title: controllerTask.text,
-                  description: "Descripcion ${controllerTask.text}",
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Row(
+              spacing: 16,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: controllerTask,
+                    decoration: InputDecoration(
+                      labelText: "Agregar nueva tarea",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
                 ),
-              );
-              controllerTask.clear();
-            },
-            child: Text("Agregar"),
-          ),
-          Expanded(
-            child: BlocBuilder<TaskCubit, List<TaskEntity>>(
-              bloc: sl<TaskCubit>()..getTasks(),
-              builder:
-                  (context, state) => ListView.builder(
+                IconButton(
+                  onPressed: () {
+                    sl<TaskCubit>().addTask(
+                      TaskEntity(
+                        id: DateTime.now().toString(),
+                        title: controllerTask.text,
+                        description: "Descripcion ${controllerTask.text}",
+                      ),
+                    );
+                    controllerTask.clear();
+                  },
+                  icon: Icon(Icons.add),
+                ),
+              ],
+            ),
+
+            Expanded(
+              child: BlocBuilder<TaskCubit, List<TaskEntity>>(
+                bloc: sl<TaskCubit>()..getTasks(),
+                builder: (context, state) {
+                  if (state.isEmpty) {
+                    return Center(child: Text("No existen tareas"));
+                  }
+                  return ListView.builder(
                     itemCount: state.length,
                     itemBuilder:
                         (context, index) => ListTile(
@@ -65,10 +83,12 @@ class HomePage extends StatelessWidget {
                             ],
                           ),
                         ),
-                  ),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

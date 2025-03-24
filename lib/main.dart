@@ -4,8 +4,9 @@ import 'package:todolist/core/injection/injection.dart';
 import 'package:todolist/presentation/cubit/task_cubit.dart';
 import 'package:todolist/presentation/pages/home_page.dart';
 
-void main() {
-  init();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await init();
   runApp(MyApp());
 }
 
